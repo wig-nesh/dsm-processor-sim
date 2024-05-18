@@ -4,9 +4,12 @@ def addstr_mid(window, string, height=0, color=0):
     win_height, win_width = window.getmaxyx()
     spaces = win_width//2 - len(string)//2
     if color==0: window.addstr(height, spaces, string)
-    else: window.addstr(height, spaces, string, curses.color_pair(1))
+    else: window.addstr(height, spaces, string, curses.color_pair(color))
 
 def main(stdscr):
+
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
 
     # ----------STATIC ELEMENTS----------
 
