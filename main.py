@@ -1,4 +1,41 @@
 import curses
+import threading
+import time
+
+class global_clock:
+    def __init__(self, interval, callback):
+        self.interval = interval
+        self.callback = callback
+        self.running = False
+        self.paused = False
+        self.thread = None
+        self.lock = threading.Lock()
+        self.condition = threading.Condition(self.lock)
+    def start(self):
+        if not self.running:
+            self.running = True
+            self.thread = threading.Thread(target=self._run)
+            self.thread.start()
+    def _run(self):
+        while self.running:
+            with self.condition:
+                if self.paused:
+                    self.condition.wait()
+                if not self.running:
+                    break
+            time.sleep(self.interval)
+            self.callback()
+    def play_pause(self):
+        with self.condition:
+            self.paused = not self.paused
+            if not self.paused:
+                self.condition.notify()        
+    def stop(self):
+        with self.condition:
+            self.running = False
+            self.paused = False
+            self.condition.notify()
+        self.thread.join()
 
 def addstr_mid(window, string, height=0, color=0):
     win_height, win_width = window.getmaxyx()
@@ -6,10 +43,69 @@ def addstr_mid(window, string, height=0, color=0):
     if color==0: window.addstr(height, spaces, string)
     else: window.addstr(height, spaces, string, curses.color_pair(color))
 
+def color(string):
+    string = string.lower()
+    if string=="red":
+        return 1
+    elif string=="green":
+        return 2
+    elif string=="yellow":
+        return 3
+    elif string=="blue":
+        return 4
+    elif string=="magenta":
+        return 5
+    elif string=="cyan":
+        return 6
+    elif string=='white':
+        return 0
+    
+def format_frequency(frequency):
+    prefixes = ['', 'K', 'M', 'G'] 
+    magnitude = 0
+    while frequency >= 1000:
+        frequency /= 1000
+        magnitude += 1
+    formatted_frequency = "{:.0f}{}".format(frequency, prefixes[magnitude] + 'Hz')
+    return formatted_frequency
+
+def update_clock(window, freq, color=0):
+    window.addstr(1,2,"●", curses.color_pair(color))
+    window.addstr(1,4,format_frequency(freq))
+    window.refresh()
+    
+def update_bus(window, color_pair=0):
+    connections = [0, 4, 10, 16, 22, 26]
+    for i in range(curses.LINES-25):
+        if i in connections: addstr_mid(window, "+", i+6, color_pair)
+        else: addstr_mid(window, "|", i+6, color_pair)
+    addstr_mid(window, "x8", i+7, color_pair)
+    window.refresh()
+
+
 def main(stdscr):
 
-    curses.start_color()
+    # initialize colors
     curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
+    curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+    curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK) 
+
+    color_pairs = [1, 2, 3, 4, 5, 6]
+    color_idx = [0]
+
+    clock_state = [False]
+    freq = 20
+
+    def clock_tick():
+        # color_idx[0] = (color_idx[0] + 1) % len(color_pairs)
+        clock_state[0] = clock_state[0]^True
+        if clock_state[0]: update_clock(clk, freq, color("yellow"))
+        else: update_clock(clk, freq, color("white"))
+
+    clock = global_clock(1/freq, clock_tick)
 
     # ----------STATIC ELEMENTS----------
 
@@ -19,13 +115,12 @@ def main(stdscr):
     stdscr.refresh()
 
     # clock window
-    height = 5; width = 30
+    height = 3; width = 11
     begin_x = width//2; begin_y = 2
     clk = curses.newwin(height, width, begin_y, begin_x)
     clk.box()
-    addstr_mid(clk, " Clock ")
+    addstr_mid(clk, " Clock ", color=3)
     clk.refresh()
-
 
     # external memory window
     height = 5; width = 60
@@ -127,13 +222,11 @@ def main(stdscr):
 
     # ----------ACTIVE ELEMENTS----------
 
+    # clock 
+    update_clock(clk, freq)
+
     # bus
-    connections = [3, 9, 15, 21, 25]
-    for i in range(curses.LINES-26):
-        if i in connections: addstr_mid(stdscr, "+", i+7, 1)
-        else: addstr_mid(stdscr, "|", i+7, 1)
-    addstr_mid(stdscr, "x8", i+8, 1)
-    stdscr.refresh()
+    update_bus(stdscr)
 
     # OR -> BUS
     begin_y = 8
@@ -190,9 +283,20 @@ def main(stdscr):
     
     stdscr.refresh()
 
-    while True:
-        key = stdscr.getch()
-        if key == ord('q'):
-            break
+    clock.start()
+    try:
+        while True:
+            key = stdscr.getch()
+            if key == ord('q'):
+                break
+            elif key == ord(' '):
+                clock.play_pause()
+                if clock.paused: clock_state[0] = True
+            elif clock.running and key == curses.KEY_RIGHT:
+                clock.play_pause()
+                clock_tick()
+                clock.play_pause()
+    finally:
+        clock.stop()
 
 curses.wrapper(main)
