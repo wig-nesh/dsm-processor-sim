@@ -1,19 +1,12 @@
 import curses
 
-def addstr_mid(window, string, height=0):
+def addstr_mid(window, string, height=0, color=0):
     win_height, win_width = window.getmaxyx()
     spaces = win_width//2 - len(string)//2
-    window.addstr(height, spaces, string)
+    if color==0: window.addstr(height, spaces, string)
+    else: window.addstr(height, spaces, string, curses.color_pair(1))
 
 def main(stdscr):
-    stdscr.clear()
-
-    # starting curses
-    stdscr = curses.initscr()
-    curses.noecho()
-    curses.cbreak()
-    stdscr.keypad(True)
-
 
     # ----------STATIC ELEMENTS----------
 
@@ -134,9 +127,9 @@ def main(stdscr):
     # bus
     connections = [3, 9, 15, 21, 25]
     for i in range(curses.LINES-26):
-        if i in connections: addstr_mid(stdscr, "+", i+7)
-        else: addstr_mid(stdscr, "|", i+7)
-    addstr_mid(stdscr, "x8", i+8)
+        if i in connections: addstr_mid(stdscr, "+", i+7, 1)
+        else: addstr_mid(stdscr, "|", i+7, 1)
+    addstr_mid(stdscr, "x8", i+8, 1)
     stdscr.refresh()
 
     # OR -> BUS
@@ -198,11 +191,5 @@ def main(stdscr):
         key = stdscr.getch()
         if key == ord('q'):
             break
-
-    # ending curses
-    curses.nocbreak()
-    stdscr.keypad(False)
-    curses.echo()
-    curses.endwin()
 
 curses.wrapper(main)
