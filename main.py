@@ -24,11 +24,21 @@ def main(stdscr):
     # stdscr.move(80,0)
     stdscr.refresh()
 
+    # clock window
+    height = 5; width = 30
+    begin_x = width//2; begin_y = 2
+    clk = curses.newwin(height, width, begin_y, begin_x)
+    clk.box()
+    addstr_mid(clk, " Clock ")
+    clk.refresh()
+
     # bus
-    bus = "| | | |"
+    connections = [3, 9, 15, 21, 25]
     for i in range(curses.LINES-21):
-        addstr_mid(stdscr, bus, i+2)
+        if i-5 in connections: addstr_mid(stdscr, "+", i+2)
+        else: addstr_mid(stdscr, "|", i+2)
         stdscr.refresh()
+    addstr_mid(stdscr, "x8", i+3)
 
     # external memory window
     height = 5; width = 60
@@ -45,7 +55,7 @@ def main(stdscr):
     op_r.box()
     addstr_mid(op_r, " Operand Register ")
     op_r.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x-6, "-"*6)
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
     stdscr.refresh()
 
     # alu window
@@ -55,7 +65,7 @@ def main(stdscr):
     alu.box()
     addstr_mid(alu, " ALU ")
     alu.refresh()    
-    stdscr.addstr(begin_y+height//2, begin_x-6, "-"*6)
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
     for i in range(3):
         if not i%2:
             stdscr.addstr(begin_y-2+i, begin_x+int(3/4*width), "+")
@@ -70,9 +80,8 @@ def main(stdscr):
     ac_r.box()
     addstr_mid(ac_r, " Accumulator ")
     ac_r.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x-6, "-"*6)
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
     stdscr.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x-6, "-"*6)
     for i in range(3):
         if not i%2:
             stdscr.addstr(begin_y-2+i, begin_x+int(9/10*width), "+")
@@ -87,7 +96,7 @@ def main(stdscr):
     r_arr.box()
     addstr_mid(r_arr, " Registers ")
     r_arr.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x-6, "-"*6)
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
     stdscr.refresh()
 
     # flag register window
@@ -106,7 +115,7 @@ def main(stdscr):
     ma_r.box()
     addstr_mid(ma_r, " Address Reg ")
     ma_r.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width, "-"*7)
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
     stdscr.refresh()
     for i in range(3):
         if not i%2:
@@ -122,7 +131,7 @@ def main(stdscr):
     pc.box()
     addstr_mid(pc, " Program Counter ")
     pc.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width, "-"*7)
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
     stdscr.refresh()
 
     # stack pointer window
@@ -132,7 +141,7 @@ def main(stdscr):
     sp.box()
     addstr_mid(sp, " Stack Pointer ")
     sp.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width, "-"*7)
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
     stdscr.refresh()
 
     # instruction register window
@@ -142,7 +151,7 @@ def main(stdscr):
     i_r.box()
     addstr_mid(i_r, " Instruction Reg ")
     i_r.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width, "-"*7)
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
     stdscr.refresh()
 
     # microprogram sequencer window
