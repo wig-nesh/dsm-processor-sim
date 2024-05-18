@@ -14,14 +14,12 @@ def main(stdscr):
     curses.cbreak()
     stdscr.keypad(True)
 
+
+    # ----------STATIC ELEMENTS----------
+
     # title
-    # stdscr.border(
-    #     '|', '|', '-', '-',
-    #     '+', '+', '+', '+'
-    # )
     stdscr.box()
     addstr_mid(stdscr, " DSM Processor Simulator ")
-    # stdscr.move(80,0)
     stdscr.refresh()
 
     # clock window
@@ -32,13 +30,6 @@ def main(stdscr):
     addstr_mid(clk, " Clock ")
     clk.refresh()
 
-    # bus
-    connections = [3, 9, 15, 21, 25]
-    for i in range(curses.LINES-21):
-        if i-5 in connections: addstr_mid(stdscr, "+", i+2)
-        else: addstr_mid(stdscr, "|", i+2)
-        stdscr.refresh()
-    addstr_mid(stdscr, "x8", i+3)
 
     # external memory window
     height = 5; width = 60
@@ -55,8 +46,6 @@ def main(stdscr):
     op_r.box()
     addstr_mid(op_r, " Operand Register ")
     op_r.refresh()
-    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
-    stdscr.refresh()
 
     # alu window
     begin_x = curses.COLS//2 + 10; begin_y += height + 1
@@ -65,13 +54,6 @@ def main(stdscr):
     alu.box()
     addstr_mid(alu, " ALU ")
     alu.refresh()    
-    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
-    for i in range(3):
-        if not i%2:
-            stdscr.addstr(begin_y-2+i, begin_x+int(3/4*width), "+")
-        else:
-            stdscr.addstr(begin_y-2+i, begin_x+int(3/4*width), "|")
-    stdscr.refresh()
 
     # accumulator register window
     begin_x = curses.COLS//2 + 10; begin_y += height + 1
@@ -80,14 +62,6 @@ def main(stdscr):
     ac_r.box()
     addstr_mid(ac_r, " Accumulator ")
     ac_r.refresh()
-    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
-    stdscr.refresh()
-    for i in range(3):
-        if not i%2:
-            stdscr.addstr(begin_y-2+i, begin_x+int(9/10*width), "+")
-        else:
-            stdscr.addstr(begin_y-2+i, begin_x+int(9/10*width), "|")
-    stdscr.refresh()
 
     # register array window
     begin_x = curses.COLS//2 + 10; begin_y += height + 1
@@ -96,8 +70,6 @@ def main(stdscr):
     r_arr.box()
     addstr_mid(r_arr, " Registers ")
     r_arr.refresh()
-    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
-    stdscr.refresh()
 
     # flag register window
     begin_x = curses.COLS//2 + 10; begin_y += height + 1
@@ -115,14 +87,6 @@ def main(stdscr):
     ma_r.box()
     addstr_mid(ma_r, " Address Reg ")
     ma_r.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
-    stdscr.refresh()
-    for i in range(3):
-        if not i%2:
-            stdscr.addstr(begin_y-2+i, begin_x+int(1/7*width), "+")
-        else:
-            stdscr.addstr(begin_y-2+i, begin_x+int(1/7*width), "|")
-    stdscr.refresh()
 
     # program counter window
     begin_x = curses.COLS//2 - width - 10; begin_y += height + 1
@@ -131,8 +95,6 @@ def main(stdscr):
     pc.box()
     addstr_mid(pc, " Program Counter ")
     pc.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
-    stdscr.refresh()
 
     # stack pointer window
     begin_x = curses.COLS//2 - width - 10; begin_y += height + 1
@@ -141,8 +103,6 @@ def main(stdscr):
     sp.box()
     addstr_mid(sp, " Stack Pointer ")
     sp.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
-    stdscr.refresh()
 
     # instruction register window
     begin_x = curses.COLS//2 - width - 10; begin_y += height + 1
@@ -151,8 +111,6 @@ def main(stdscr):
     i_r.box()
     addstr_mid(i_r, " Instruction Reg ")
     i_r.refresh()
-    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
-    stdscr.refresh()
 
     # microprogram sequencer window
     begin_x = curses.COLS//2 - width - 10; begin_y += height + 9
@@ -170,6 +128,71 @@ def main(stdscr):
     addstr_mid(mp_mem, " Microprogram Memory ")
     mp_mem.refresh()
 
+
+    # ----------ACTIVE ELEMENTS----------
+
+    # bus
+    connections = [3, 9, 15, 21, 25]
+    for i in range(curses.LINES-26):
+        if i in connections: addstr_mid(stdscr, "+", i+7)
+        else: addstr_mid(stdscr, "|", i+7)
+    addstr_mid(stdscr, "x8", i+8)
+    stdscr.refresh()
+
+    # OR -> BUS
+    begin_y = 8
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
+
+    # ALU -> BUS
+    begin_y += 6
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
+    # OR -> ALU
+    begin_x = curses.COLS//2 + 10
+    width = 20
+    for i in range(3):
+        if not i%2:
+            stdscr.addstr(begin_y-2+i, begin_x+int(3/4*width), "+")
+        else:
+            stdscr.addstr(begin_y-2+i, begin_x+int(3/4*width), "|")
+
+    # AR -> BUS
+    begin_y += 6
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
+    # ALU -> AR
+    for i in range(3):
+        if not i%2:
+            stdscr.addstr(begin_y-2+i, begin_x+int(9/10*width), "+")
+        else:
+            stdscr.addstr(begin_y-2+i, begin_x+int(9/10*width), "|")
+
+    # RG <-> BUS
+    begin_y += 10
+    stdscr.addstr(begin_y+height//2, curses.COLS//2 + 1, "-"*9+"+")
+
+    begin_x = curses.COLS//2 - width - 10; begin_y = height + 3
+    height = 5; width = 20
+    # MR <- BUS
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
+    # MR -> extMemory
+    for i in range(3):
+        if not i%2:
+            stdscr.addstr(begin_y-2+i, begin_x+int(1/7*width), "+")
+        else:
+            stdscr.addstr(begin_y-2+i, begin_x+int(1/7*width), "|")
+
+    # PC <-> BUS
+    begin_y += 6
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
+
+    # SP <-> BUS
+    begin_y += 6
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
+
+    # IR <- BUS
+    begin_y += 6
+    stdscr.addstr(begin_y+height//2, begin_x+width-1, "+"+"-"*10)
+    
+    stdscr.refresh()
 
     while True:
         key = stdscr.getch()
