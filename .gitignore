@@ -4,3 +4,5 @@ temp.py
 temp2.py
 output.txt
 binary_numbers_for_excel.txt
+
+scripts\__pycache__
