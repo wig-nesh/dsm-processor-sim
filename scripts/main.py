@@ -7,6 +7,7 @@ from global_variables import *
 from update import *
 from static import *
 from encoder import *
+from select import moviSrg
 
 class GlobalClock:
     def __init__(self, interval, callback):
@@ -42,7 +43,6 @@ class GlobalClock:
             self.paused = False
             self.condition.notify()
         self.thread.join()
-
 
 def main(stdscr):
 
@@ -90,22 +90,30 @@ def main(stdscr):
         if clock_state[0]: # rising
             update_clock(clk, freq, color("yellow"))
             
-            if clock_cycle[0]==0:
+            if clock_cycle[0]==0: # 1
                 # Epc
                 update_PCData(pc, PCData, color("green"))
-            elif clock_cycle[0]==1:
+            elif clock_cycle[0]==1: # 2
                 # RD
                 instruction_address[0] = extMemData[MRData]
                 extMemState[MRData] = color("green")
                 update_ExtMemData(ext_mem_display, extMemData, extMemState)
 
             elif clock_cycle[0]==2:
-                if MPSeqData in [0b0100001110,0b0100010000,0b0100010010,0b0100010100,0b0100010110,0b0100011000,0b0100011010,0b0100011100,0b0100011110,0b0100100000,0b0100100010,0b0100100100,0b0100100110,0b0100101000,0b0100101010,0b0100101100]:
+                # movs-3
+                if MPSeqData in [encode_IRtoMPS(0x70), encode_IRtoMPS(0x71), encode_IRtoMPS(0x72), encode_IRtoMPS(0x73), encode_IRtoMPS(0x74), encode_IRtoMPS(0x75), encode_IRtoMPS(0x76), encode_IRtoMPS(0x77), encode_IRtoMPS(0x78), encode_IRtoMPS(0x79), encode_IRtoMPS(0x7A), encode_IRtoMPS(0x7B), encode_IRtoMPS(0x7C), encode_IRtoMPS(0x7D), encode_IRtoMPS(0x7E), encode_IRtoMPS(0x7F)]:
+                    # Erg
+                    value[0] = RGData[0]
+                    RGState[0] = color("green")
+                    update_RGData(r_arr, RGData, RGState)
+                # movi-3
+                elif MPSeqData in [encode_IRtoMPS(0x90), encode_IRtoMPS(0x91), encode_IRtoMPS(0x92), encode_IRtoMPS(0x93), encode_IRtoMPS(0x94), encode_IRtoMPS(0x95), encode_IRtoMPS(0x96), encode_IRtoMPS(0x97), encode_IRtoMPS(0x98), encode_IRtoMPS(0x99), encode_IRtoMPS(0x9A), encode_IRtoMPS(0x9B), encode_IRtoMPS(0x9C), encode_IRtoMPS(0x9D), encode_IRtoMPS(0x9E), encode_IRtoMPS(0x9F)]:
                     # Epc
                     update_PCData(pc, PCData, color("green"))
 
             elif clock_cycle[0]==3:
-                if MPSeqData in [0b0100001111,0b0100010001,0b0100010011,0b0100010101,0b0100010111,0b0100011001,0b0100011011,0b0100011101,0b0100011111,0b0100100001,0b0100100011,0b0100100101,0b0100100111,0b0100101001,0b0100101011,0b0100101101]:
+                # movi-4
+                if MPSeqData in  [encode_IRtoMPS(0x90)+1, encode_IRtoMPS(0x91)+1, encode_IRtoMPS(0x92)+1, encode_IRtoMPS(0x93)+1, encode_IRtoMPS(0x94)+1, encode_IRtoMPS(0x95)+1, encode_IRtoMPS(0x96)+1, encode_IRtoMPS(0x97)+1, encode_IRtoMPS(0x98)+1, encode_IRtoMPS(0x99)+1, encode_IRtoMPS(0x9A)+1, encode_IRtoMPS(0x9B)+1, encode_IRtoMPS(0x9C)+1, encode_IRtoMPS(0x9D)+1, encode_IRtoMPS(0x9E)+1, encode_IRtoMPS(0x9F)+1]:
                     # RD 
                     value[0] = extMemData[MRData]
                     extMemState[MRData] = color("green")
@@ -113,14 +121,15 @@ def main(stdscr):
 
         else: # falling
             update_clock(clk, freq, color("white"))
-            if clock_cycle[0]==0:
+
+            if clock_cycle[0]==0: # 1
                 # Lmr
                 MRData = PCData
                 update_MRData(ma_r, MRData, color("blue"))
                 # Ipc
                 PCData += 1
                 update_PCData(pc, PCData, color("yellow"))
-            elif clock_cycle[0]==1:
+            elif clock_cycle[0]==1: # 2
                 # Lir
                 IRData = instruction_address[0]
                 update_IRData(i_r, IRData, color("blue"))
@@ -131,7 +140,16 @@ def main(stdscr):
                 update_MPMemData(mp_mem, MPMemData)
 
             elif clock_cycle[0]==2:
-                if MPSeqData in [0b0100001110,0b0100010000,0b0100010010,0b0100010100,0b0100010110,0b0100011000,0b0100011010,0b0100011100,0b0100011110,0b0100100000,0b0100100010,0b0100100100,0b0100100110,0b0100101000,0b0100101010,0b0100101100]:
+                # movs-3
+                if MPSeqData in [encode_IRtoMPS(0x70), encode_IRtoMPS(0x71), encode_IRtoMPS(0x72), encode_IRtoMPS(0x73), encode_IRtoMPS(0x74), encode_IRtoMPS(0x75), encode_IRtoMPS(0x76), encode_IRtoMPS(0x77), encode_IRtoMPS(0x78), encode_IRtoMPS(0x79), encode_IRtoMPS(0x7A), encode_IRtoMPS(0x7B), encode_IRtoMPS(0x7C), encode_IRtoMPS(0x7D), encode_IRtoMPS(0x7E), encode_IRtoMPS(0x7F)]:
+                    # Lar
+                    ARData = value[0]
+                    ARState = color("blue")
+                    update_ARData(ac_r, ARData, ARState)
+                    # End
+                    clock_cycle[0] = -1 
+                # movi-3
+                if MPSeqData in [encode_IRtoMPS(0x90), encode_IRtoMPS(0x91), encode_IRtoMPS(0x92), encode_IRtoMPS(0x93), encode_IRtoMPS(0x94), encode_IRtoMPS(0x95), encode_IRtoMPS(0x96), encode_IRtoMPS(0x97), encode_IRtoMPS(0x98), encode_IRtoMPS(0x99), encode_IRtoMPS(0x9A), encode_IRtoMPS(0x9B), encode_IRtoMPS(0x9C), encode_IRtoMPS(0x9D), encode_IRtoMPS(0x9E), encode_IRtoMPS(0x9F)]:
                     # Lmr
                     MRData = PCData
                     update_MRData(ma_r, MRData, color("blue"))
@@ -145,119 +163,17 @@ def main(stdscr):
                 update_MPMemData(mp_mem, MPMemData)
 
             elif clock_cycle[0]==3:
-                if MPSeqData==0b0100001111: # R0
+                #   movi-4
+                if MPSeqData in [encode_IRtoMPS(0x90)+1, encode_IRtoMPS(0x91)+1, encode_IRtoMPS(0x92)+1, encode_IRtoMPS(0x93)+1, encode_IRtoMPS(0x94)+1, encode_IRtoMPS(0x95)+1, encode_IRtoMPS(0x96)+1, encode_IRtoMPS(0x97)+1, encode_IRtoMPS(0x98)+1, encode_IRtoMPS(0x99)+1, encode_IRtoMPS(0x9A)+1, encode_IRtoMPS(0x9B)+1, encode_IRtoMPS(0x9C)+1, encode_IRtoMPS(0x9D)+1, encode_IRtoMPS(0x9E)+1, encode_IRtoMPS(0x9F)+1]:
+                    RegNum = moviSrg(MPSeqData)
                     # Lrg
-                    RGData[0] = value[0]
-                    RGState[0] = color("blue")
+                    RGData[RegNum] = value[0]
+                    RGState[RegNum] = color("blue")
                     update_RGData(r_arr, RGData, RGState)
                     # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100010001: # R1
-                    # Lrg
-                    RGData[1] = value[0]
-                    RGState[1] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100010011: # R2
-                    # Lrg
-                    RGData[2] = value[0]
-                    RGState[2] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100010101: # R3
-                    # Lrg
-                    RGData[3] = value[0]
-                    RGState[3] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100010111: # R4
-                    # Lrg
-                    RGData[4] = value[0]
-                    RGState[4] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100011001: # R5
-                    # Lrg
-                    RGData[5] = value[0]
-                    RGState[5] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100011011: # R6
-                    # Lrg
-                    RGData[6] = value[0]
-                    RGState[6] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100011101: # R7
-                    # Lrg
-                    RGData[7] = value[0]
-                    RGState[7] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100011111: # R8
-                    # Lrg
-                    RGData[8] = value[0]
-                    RGState[8] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100100001: # R9
-                    # Lrg
-                    RGData[9] = value[0]
-                    RGState[9] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100100011: # R10
-                    # Lrg
-                    RGData[10] = value[0]
-                    RGState[10] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100100101: # R11
-                    # Lrg
-                    RGData[11] = value[0]
-                    RGState[11] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100100111: # R12
-                    # Lrg
-                    RGData[12] = value[0]
-                    RGState[12] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100101001: # R13
-                    # Lrg
-                    RGData[13] = value[0]
-                    RGState[13] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100101011: # R14
-                    # Lrg
-                    RGData[14] = value[0]
-                    RGState[14] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
-                if MPSeqData==0b0100101101: # R15
-                    # Lrg
-                    RGData[15] = value[0]
-                    RGState[15] = color("blue")
-                    update_RGData(r_arr, RGData, RGState)
-                    # End
-                    clock_cycle[0] = -1
+                    clock_cycle[0] = -1                    
 
+            
             clock_cycle[0] = (clock_cycle[0]+1)%4
 
 

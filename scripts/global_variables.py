@@ -1,7 +1,7 @@
 main_mid = 51
 
 extMemData = [0x00]*256
-extMemData[:9] = [0x90,0x05,0x91,0x03,0x92,0x10,0x93,0x0f,0x07] # temporary program
+extMemData[:4] = [0x90,0x05,0x70,0x07] # temporary program
 extMemState = [0]*256 # 0-empty 1-program 2-data segment 3-stack 4-other, also used for color
 extMemState[-10:] = [3]*10 # temp stack
 
