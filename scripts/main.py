@@ -43,6 +43,11 @@ class GlobalClock:
             self.paused = False
             self.condition.notify()
         self.thread.join()
+    def immediate_stop(self):
+        with self.condition:
+            self.running = False
+            self.paused = False
+            self.condition.notify_all()
 
 def main(stdscr):
 
@@ -52,9 +57,6 @@ def main(stdscr):
     curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
     curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK) 
-
-    color_pairs = [1, 2, 3, 4, 5, 6]
-    color_idx = [0]
 
     clock_state = [False]
     clock_cycle = [0]
@@ -105,11 +107,14 @@ def main(stdscr):
                 # nop-3
                 if MPSeqData == encode_IRtoMPS(0x00):
                     pass
-                # adi,sbi,xri,ani,ori-3
-                if MPSeqData in [encode_IRtoMPS(0x01), encode_IRtoMPS(0x02), encode_IRtoMPS(0x03), encode_IRtoMPS(0x04), encode_IRtoMPS(0x05)]:
+                # adi,sbi,xri,ani,ori,cmi-3
+                if MPSeqData in [encode_IRtoMPS(0x01), encode_IRtoMPS(0x02), encode_IRtoMPS(0x03), encode_IRtoMPS(0x04), encode_IRtoMPS(0x05), encode_IRtoMPS(0x06)]:
                     # Epc
                     PCState = color("green")
                     update_PCData(pc, PCData, PCState)
+                # stop-3
+                if MPSeqData == encode_IRtoMPS(0x07):
+                    pass
                 # movs-3
                 if MPSeqData in [encode_IRtoMPS(0x70), encode_IRtoMPS(0x71), encode_IRtoMPS(0x72), encode_IRtoMPS(0x73), encode_IRtoMPS(0x74), encode_IRtoMPS(0x75), encode_IRtoMPS(0x76), encode_IRtoMPS(0x77), encode_IRtoMPS(0x78), encode_IRtoMPS(0x79), encode_IRtoMPS(0x7A), encode_IRtoMPS(0x7B), encode_IRtoMPS(0x7C), encode_IRtoMPS(0x7D), encode_IRtoMPS(0x7E), encode_IRtoMPS(0x7F)]:
                     # Erg
@@ -130,8 +135,8 @@ def main(stdscr):
                     update_PCData(pc, PCData, PCState)
 
             elif clock_cycle[0]==3:
-                # adi,sbi,xri,ani,ori-4
-                if MPSeqData in [encode_IRtoMPS(0x01)+1, encode_IRtoMPS(0x02)+1, encode_IRtoMPS(0x03)+1, encode_IRtoMPS(0x04)+1, encode_IRtoMPS(0x05)+1]:
+                # adi,sbi,xri,ani,ori,cmi-4
+                if MPSeqData in [encode_IRtoMPS(0x01)+1, encode_IRtoMPS(0x02)+1, encode_IRtoMPS(0x03)+1, encode_IRtoMPS(0x04)+1, encode_IRtoMPS(0x05)+1, encode_IRtoMPS(0x06)+1]:
                     # RD
                     value[0] = extMemData[MRData]
                     extMemState[MRData] = color("green")
@@ -144,8 +149,8 @@ def main(stdscr):
                     update_ExtMemData(ext_mem_display, extMemData, extMemState)
             
             elif clock_cycle[0]==4:
-                # adi,sbi,xri,ani,ori-5
-                if MPSeqData in [encode_IRtoMPS(0x01)+2, encode_IRtoMPS(0x02)+2, encode_IRtoMPS(0x03)+2, encode_IRtoMPS(0x04)+2, encode_IRtoMPS(0x05)+2]:
+                # adi,sbi,xri,ani,ori,cmi-5
+                if MPSeqData in [encode_IRtoMPS(0x01)+2, encode_IRtoMPS(0x02)+2, encode_IRtoMPS(0x03)+2, encode_IRtoMPS(0x04)+2, encode_IRtoMPS(0x05)+2, encode_IRtoMPS(0x06)+2]:
                     # Eor
                     ALUData[0] = ORData
                     ORState = color("green")
@@ -159,6 +164,7 @@ def main(stdscr):
                     if MPSeqData==encode_IRtoMPS(0x03)+2: ALUData[2] = ALUData[0]^ALUData[1]; ALUState = 3
                     if MPSeqData==encode_IRtoMPS(0x04)+2: ALUData[2] = ALUData[0]&ALUData[1]; ALUState = 4
                     if MPSeqData==encode_IRtoMPS(0x05)+2: ALUData[2] = ALUData[0]|ALUData[1]; ALUState = 5
+                    if MPSeqData==encode_IRtoMPS(0x06)+2: ALUData[2] = ALUData[1]-ALUData[0]; ALUState = 6
                     update_ALUData(alu, ALUData, ALUState)
 
     
@@ -188,14 +194,20 @@ def main(stdscr):
                 if MPSeqData == encode_IRtoMPS(0x00):
                     # End
                     clock_cycle[0] = -1
-                # adi,sbi,xri,ani,ori-3
-                if MPSeqData in [encode_IRtoMPS(0x01), encode_IRtoMPS(0x02), encode_IRtoMPS(0x03), encode_IRtoMPS(0x04), encode_IRtoMPS(0x05)]:
+                # adi,sbi,xri,ani,ori,cmi-3
+                if MPSeqData in [encode_IRtoMPS(0x01), encode_IRtoMPS(0x02), encode_IRtoMPS(0x03), encode_IRtoMPS(0x04), encode_IRtoMPS(0x05), encode_IRtoMPS(0x06)]:
                     # Lmr
                     MRData = PCData
                     update_MRData(ma_r, MRData, color("blue"))
                     # Ipc
                     PCData += 1
                     update_PCData(pc, PCData, color("yellow"))
+                # stop-3
+                if MPSeqData == encode_IRtoMPS(0x07):
+                    # End
+                    clock_cycle[0] = -1
+                    # Stop Clock
+                    clock.immediate_stop()
                 # movs-3
                 if MPSeqData in [encode_IRtoMPS(0x70), encode_IRtoMPS(0x71), encode_IRtoMPS(0x72), encode_IRtoMPS(0x73), encode_IRtoMPS(0x74), encode_IRtoMPS(0x75), encode_IRtoMPS(0x76), encode_IRtoMPS(0x77), encode_IRtoMPS(0x78), encode_IRtoMPS(0x79), encode_IRtoMPS(0x7A), encode_IRtoMPS(0x7B), encode_IRtoMPS(0x7C), encode_IRtoMPS(0x7D), encode_IRtoMPS(0x7E), encode_IRtoMPS(0x7F)]:
                     # Lar
@@ -228,8 +240,8 @@ def main(stdscr):
                 update_MPMemData(mp_mem, MPMemData)
 
             elif clock_cycle[0]==3:
-                # adi,sbi,xri,ani,ori-4
-                if MPSeqData in [encode_IRtoMPS(0x01)+1, encode_IRtoMPS(0x02)+1, encode_IRtoMPS(0x03)+1, encode_IRtoMPS(0x04)+1, encode_IRtoMPS(0x05)+1]:
+                # adi,sbi,xri,ani,ori,cmi-4
+                if MPSeqData in [encode_IRtoMPS(0x01)+1, encode_IRtoMPS(0x02)+1, encode_IRtoMPS(0x03)+1, encode_IRtoMPS(0x04)+1, encode_IRtoMPS(0x05)+1, encode_IRtoMPS(0x06)+1]:
                     # Lor
                     ORData = value[0]
                     ORState = color("blue")
@@ -257,6 +269,9 @@ def main(stdscr):
                     ARData = ALUData[2]
                     ARState = color("blue")
                     update_ARData(ac_r, ARData, ARState)
+                    # End
+                    clock_cycle[0] = -1
+                if MPSeqData == encode_IRtoMPS(0x06)+2:
                     # End
                     clock_cycle[0] = -1
                 
