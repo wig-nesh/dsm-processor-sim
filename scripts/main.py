@@ -159,13 +159,25 @@ def main(stdscr):
                     ALUData[1] = ARData
                     ARState = color("green")
                     update_ARData(ac_r, ARData, ARState)
-                    if MPSeqData==encode_IRtoMPS(0x01)+2: ALUData[2] = ALUData[0]+ALUData[1]; ALUState = 1
-                    if MPSeqData==encode_IRtoMPS(0x02)+2: ALUData[2] = ALUData[1]-ALUData[0]; ALUState = 2
                     if MPSeqData==encode_IRtoMPS(0x03)+2: ALUData[2] = ALUData[0]^ALUData[1]; ALUState = 3
                     if MPSeqData==encode_IRtoMPS(0x04)+2: ALUData[2] = ALUData[0]&ALUData[1]; ALUState = 4
                     if MPSeqData==encode_IRtoMPS(0x05)+2: ALUData[2] = ALUData[0]|ALUData[1]; ALUState = 5
-                    if MPSeqData==encode_IRtoMPS(0x06)+2: ALUData[2] = ALUData[1]-ALUData[0]; ALUState = 6
+                    if MPSeqData==encode_IRtoMPS(0x01)+2: ALUState = 1
+                    if MPSeqData==encode_IRtoMPS(0x02)+2: ALUState = 2
+                    if MPSeqData==encode_IRtoMPS(0x06)+2: ALUState = 6
+                    if MPSeqData in [encode_IRtoMPS(0x01)+2, encode_IRtoMPS(0x02)+2, encode_IRtoMPS(0x06)+2]:
+                        a = ALUData[0]; b = ALUData[1]
+                        if a&0x80: a=-((a^0xff)+1)
+                        if b&0x80: b=-((b^0xff)+1)
+                        if MPSeqData==encode_IRtoMPS(0x01)+2: ALUData[2] = a+b
+                        else: ALUData[2] = b-a
+                    if ALUData[2]<0: FRData[0] = 1 # S
+                    if ALUData[2]==0: FRData[1] = 1 # Z
+                    if parity(ALUData[2])==1: FRData[5] = 1 # P
+                    if ALUData[2]>127: FRData[7] = 1 # C
+                    ALUData[2] &= 0xff # twos complement
                     update_ALUData(alu, ALUData, ALUState)
+                    update_FRData(f_r, FRData)
 
     
         # -----------------FALLING EDGE-----------------

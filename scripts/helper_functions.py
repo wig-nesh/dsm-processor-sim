@@ -29,3 +29,6 @@ def format_frequency(frequency):
         magnitude += 1
     formatted_frequency = "{:.0f}{}".format(frequency, prefixes[magnitude] + 'Hz')
     return formatted_frequency
+
+def parity(num):
+    return num&0x01^num&0x02^num&0x04^num&0x08^num&0x10^num&0x20^num&0x40^num&0x80
