@@ -34,7 +34,7 @@ def static_OR():
     return op_r
 
 def static_ALU():
-    begin_x = main_mid + 10; begin_y = 13
+    begin_x = main_mid + 10; begin_y = 14
     height = 5; width = 20
     alu = curses.newwin(height, width, begin_y, begin_x)
     alu.box()
@@ -43,7 +43,7 @@ def static_ALU():
     return alu
 
 def static_AR():
-    begin_x = main_mid + 10; begin_y = 19
+    begin_x = main_mid + 10; begin_y = 20
     height = 5; width = 20
     ac_r = curses.newwin(height, width, begin_y, begin_x)
     ac_r.box()
@@ -88,7 +88,7 @@ def static_MPMem():
     return mp_mem
 
 def static_MR():
-    begin_x = main_mid - 30; begin_y = 7
+    begin_x = main_mid - 30; begin_y = 8
     height = 5; width = 20
     ma_r = curses.newwin(height, width, begin_y, begin_x)
     ma_r.box()
@@ -97,7 +97,7 @@ def static_MR():
     return ma_r
 
 def static_PC():
-    begin_x = main_mid - 30; begin_y = 13
+    begin_x = main_mid - 30; begin_y = 14
     height = 5; width = 20
     pc = curses.newwin(height, width, begin_y, begin_x)
     pc.box()
@@ -106,7 +106,7 @@ def static_PC():
     return pc
 
 def static_SP():
-    begin_x = main_mid - 30; begin_y = 19
+    begin_x = main_mid - 30; begin_y = 20
     height = 5; width = 20
     sp = curses.newwin(height, width, begin_y, begin_x)
     sp.box()
