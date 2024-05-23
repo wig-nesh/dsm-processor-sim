@@ -115,6 +115,13 @@ def main(stdscr):
                 # stop-3
                 if MPSeqData == encode_IRtoMPS(0x07):
                     pass
+                # add,sub,xor,and,or,cmp-3
+                if MPSeqData in [encode_IRtoMPS(0x10),encode_IRtoMPS(0x11),encode_IRtoMPS(0x12),encode_IRtoMPS(0x13),encode_IRtoMPS(0x14),encode_IRtoMPS(0x15),encode_IRtoMPS(0x16),encode_IRtoMPS(0x17),encode_IRtoMPS(0x18),encode_IRtoMPS(0x19),encode_IRtoMPS(0x1a),encode_IRtoMPS(0x1b),encode_IRtoMPS(0x1c),encode_IRtoMPS(0x1d),encode_IRtoMPS(0x1e),encode_IRtoMPS(0x1f),encode_IRtoMPS(0x20),encode_IRtoMPS(0x21),encode_IRtoMPS(0x22),encode_IRtoMPS(0x23),encode_IRtoMPS(0x24),encode_IRtoMPS(0x25),encode_IRtoMPS(0x26),encode_IRtoMPS(0x27),encode_IRtoMPS(0x28),encode_IRtoMPS(0x29),encode_IRtoMPS(0x2a),encode_IRtoMPS(0x2b),encode_IRtoMPS(0x2c),encode_IRtoMPS(0x2d),encode_IRtoMPS(0x2e),encode_IRtoMPS(0x2f),encode_IRtoMPS(0x30),encode_IRtoMPS(0x31),encode_IRtoMPS(0x32),encode_IRtoMPS(0x33),encode_IRtoMPS(0x34),encode_IRtoMPS(0x35),encode_IRtoMPS(0x36),encode_IRtoMPS(0x37),encode_IRtoMPS(0x38),encode_IRtoMPS(0x39),encode_IRtoMPS(0x3a),encode_IRtoMPS(0x3b),encode_IRtoMPS(0x3c),encode_IRtoMPS(0x3d),encode_IRtoMPS(0x3e),encode_IRtoMPS(0x3f),encode_IRtoMPS(0x40),encode_IRtoMPS(0x41),encode_IRtoMPS(0x42),encode_IRtoMPS(0x43),encode_IRtoMPS(0x44),encode_IRtoMPS(0x45),encode_IRtoMPS(0x46),encode_IRtoMPS(0x47),encode_IRtoMPS(0x48),encode_IRtoMPS(0x49),encode_IRtoMPS(0x4a),encode_IRtoMPS(0x4b),encode_IRtoMPS(0x4c),encode_IRtoMPS(0x4d),encode_IRtoMPS(0x4e),encode_IRtoMPS(0x4f),encode_IRtoMPS(0x50),encode_IRtoMPS(0x51),encode_IRtoMPS(0x52),encode_IRtoMPS(0x53),encode_IRtoMPS(0x54),encode_IRtoMPS(0x55),encode_IRtoMPS(0x56),encode_IRtoMPS(0x57),encode_IRtoMPS(0x58),encode_IRtoMPS(0x59),encode_IRtoMPS(0x5a),encode_IRtoMPS(0x5b),encode_IRtoMPS(0x5c),encode_IRtoMPS(0x5d),encode_IRtoMPS(0x5e),encode_IRtoMPS(0x5f),encode_IRtoMPS(0x60),encode_IRtoMPS(0x61),encode_IRtoMPS(0x62),encode_IRtoMPS(0x63),encode_IRtoMPS(0x64),encode_IRtoMPS(0x65),encode_IRtoMPS(0x66),encode_IRtoMPS(0x67),encode_IRtoMPS(0x68),encode_IRtoMPS(0x69),encode_IRtoMPS(0x6a),encode_IRtoMPS(0x6b),encode_IRtoMPS(0x6c),encode_IRtoMPS(0x6d),encode_IRtoMPS(0x6e),encode_IRtoMPS(0x6f)]:
+                    # Erg
+                    RegNum = Srg(MPSeqData)
+                    value[0] = RGData[RegNum]
+                    RGState[RegNum] = color("green")
+                    update_RGData(r_arr, RGData, RGState)
                 # movs-3
                 if MPSeqData in [encode_IRtoMPS(0x70), encode_IRtoMPS(0x71), encode_IRtoMPS(0x72), encode_IRtoMPS(0x73), encode_IRtoMPS(0x74), encode_IRtoMPS(0x75), encode_IRtoMPS(0x76), encode_IRtoMPS(0x77), encode_IRtoMPS(0x78), encode_IRtoMPS(0x79), encode_IRtoMPS(0x7A), encode_IRtoMPS(0x7B), encode_IRtoMPS(0x7C), encode_IRtoMPS(0x7D), encode_IRtoMPS(0x7E), encode_IRtoMPS(0x7F)]:
                     # Erg
@@ -141,6 +148,45 @@ def main(stdscr):
                     value[0] = extMemData[MRData]
                     extMemState[MRData] = color("green")
                     update_ExtMemData(ext_mem_display, extMemData, extMemState)
+                # add,sub,xor,and,or,cmp-4
+                if MPSeqData in [encode_IRtoMPS(0x10)+1,encode_IRtoMPS(0x11)+1,encode_IRtoMPS(0x12)+1,encode_IRtoMPS(0x13)+1,encode_IRtoMPS(0x14)+1,encode_IRtoMPS(0x15)+1,encode_IRtoMPS(0x16)+1,encode_IRtoMPS(0x17)+1,encode_IRtoMPS(0x18)+1,encode_IRtoMPS(0x19)+1,encode_IRtoMPS(0x1a)+1,encode_IRtoMPS(0x1b)+1,encode_IRtoMPS(0x1c)+1,encode_IRtoMPS(0x1d)+1,encode_IRtoMPS(0x1e)+1,encode_IRtoMPS(0x1f)+1,encode_IRtoMPS(0x20)+1,encode_IRtoMPS(0x21)+1,encode_IRtoMPS(0x22)+1,encode_IRtoMPS(0x23)+1,encode_IRtoMPS(0x24)+1,encode_IRtoMPS(0x25)+1,encode_IRtoMPS(0x26)+1,encode_IRtoMPS(0x27)+1,encode_IRtoMPS(0x28)+1,encode_IRtoMPS(0x29)+1,encode_IRtoMPS(0x2a)+1,encode_IRtoMPS(0x2b)+1,encode_IRtoMPS(0x2c)+1,encode_IRtoMPS(0x2d)+1,encode_IRtoMPS(0x2e)+1,encode_IRtoMPS(0x2f)+1,encode_IRtoMPS(0x30)+1,encode_IRtoMPS(0x31)+1,encode_IRtoMPS(0x32)+1,encode_IRtoMPS(0x33)+1,encode_IRtoMPS(0x34)+1,encode_IRtoMPS(0x35)+1,encode_IRtoMPS(0x36)+1,encode_IRtoMPS(0x37)+1,encode_IRtoMPS(0x38)+1,encode_IRtoMPS(0x39)+1,encode_IRtoMPS(0x3a)+1,encode_IRtoMPS(0x3b)+1,encode_IRtoMPS(0x3c)+1,encode_IRtoMPS(0x3d)+1,encode_IRtoMPS(0x3e)+1,encode_IRtoMPS(0x3f)+1,encode_IRtoMPS(0x40)+1,encode_IRtoMPS(0x41)+1,encode_IRtoMPS(0x42)+1,encode_IRtoMPS(0x43)+1,encode_IRtoMPS(0x44)+1,encode_IRtoMPS(0x45)+1,encode_IRtoMPS(0x46)+1,encode_IRtoMPS(0x47)+1,encode_IRtoMPS(0x48)+1,encode_IRtoMPS(0x49)+1,encode_IRtoMPS(0x4a)+1,encode_IRtoMPS(0x4b)+1,encode_IRtoMPS(0x4c)+1,encode_IRtoMPS(0x4d)+1,encode_IRtoMPS(0x4e)+1,encode_IRtoMPS(0x4f)+1,encode_IRtoMPS(0x50)+1,encode_IRtoMPS(0x51)+1,encode_IRtoMPS(0x52)+1,encode_IRtoMPS(0x53)+1,encode_IRtoMPS(0x54)+1,encode_IRtoMPS(0x55)+1,encode_IRtoMPS(0x56)+1,encode_IRtoMPS(0x57)+1,encode_IRtoMPS(0x58)+1,encode_IRtoMPS(0x59)+1,encode_IRtoMPS(0x5a)+1,encode_IRtoMPS(0x5b)+1,encode_IRtoMPS(0x5c)+1,encode_IRtoMPS(0x5d)+1,encode_IRtoMPS(0x5e)+1,encode_IRtoMPS(0x5f)+1,encode_IRtoMPS(0x60)+1,encode_IRtoMPS(0x61)+1,encode_IRtoMPS(0x62)+1,encode_IRtoMPS(0x63)+1,encode_IRtoMPS(0x64)+1,encode_IRtoMPS(0x65)+1,encode_IRtoMPS(0x66)+1,encode_IRtoMPS(0x67)+1,encode_IRtoMPS(0x68)+1,encode_IRtoMPS(0x69)+1,encode_IRtoMPS(0x6a)+1,encode_IRtoMPS(0x6b)+1,encode_IRtoMPS(0x6c)+1,encode_IRtoMPS(0x6d)+1,encode_IRtoMPS(0x6e)+1,encode_IRtoMPS(0x6f)+1]:
+                    # Eor
+                    ALUData[0] = ORData
+                    ORState = color("green")
+                    update_ORData(op_r, ORData, ORState)
+                    # Ear
+                    ALUData[1] = ARData
+                    ARState = color("green")
+                    update_ARData(ac_r, ARData, ARState)
+                    if MPSeqData in [encode_IRtoMPS(0x30)+1,encode_IRtoMPS(0x31)+1,encode_IRtoMPS(0x32)+1,encode_IRtoMPS(0x33)+1,encode_IRtoMPS(0x34)+1,encode_IRtoMPS(0x35)+1,encode_IRtoMPS(0x36)+1,encode_IRtoMPS(0x37)+1,encode_IRtoMPS(0x38)+1,encode_IRtoMPS(0x39)+1,encode_IRtoMPS(0x3a)+1,encode_IRtoMPS(0x3b)+1,encode_IRtoMPS(0x3c)+1,encode_IRtoMPS(0x3d)+1,encode_IRtoMPS(0x3e)+1,encode_IRtoMPS(0x3f)+1]: 
+                        ALUData[2] = ALUData[0]^ALUData[1] 
+                        ALUState = 3
+                    if MPSeqData in [encode_IRtoMPS(0x40)+1,encode_IRtoMPS(0x41)+1,encode_IRtoMPS(0x42)+1,encode_IRtoMPS(0x43)+1,encode_IRtoMPS(0x44)+1,encode_IRtoMPS(0x45)+1,encode_IRtoMPS(0x46)+1,encode_IRtoMPS(0x47)+1,encode_IRtoMPS(0x48)+1,encode_IRtoMPS(0x49)+1,encode_IRtoMPS(0x4a)+1,encode_IRtoMPS(0x4b)+1,encode_IRtoMPS(0x4c)+1,encode_IRtoMPS(0x4d)+1,encode_IRtoMPS(0x4e)+1,encode_IRtoMPS(0x4f)+1]: 
+                        ALUData[2] = ALUData[0]&ALUData[1]
+                        ALUState = 4
+                    if MPSeqData in [encode_IRtoMPS(0x50)+1,encode_IRtoMPS(0x51)+1,encode_IRtoMPS(0x52)+1,encode_IRtoMPS(0x53)+1,encode_IRtoMPS(0x54)+1,encode_IRtoMPS(0x55)+1,encode_IRtoMPS(0x56)+1,encode_IRtoMPS(0x57)+1,encode_IRtoMPS(0x58)+1,encode_IRtoMPS(0x59)+1,encode_IRtoMPS(0x5a)+1,encode_IRtoMPS(0x5b)+1,encode_IRtoMPS(0x5c)+1,encode_IRtoMPS(0x5d)+1,encode_IRtoMPS(0x5e)+1,encode_IRtoMPS(0x5f)+1]: 
+                        ALUData[2] = ALUData[0]|ALUData[1]
+                        ALUState = 5
+                    if MPSeqData in [encode_IRtoMPS(0x10)+1,encode_IRtoMPS(0x11)+1,encode_IRtoMPS(0x12)+1,encode_IRtoMPS(0x13)+1,encode_IRtoMPS(0x14)+1,encode_IRtoMPS(0x15)+1,encode_IRtoMPS(0x16)+1,encode_IRtoMPS(0x17)+1,encode_IRtoMPS(0x18)+1,encode_IRtoMPS(0x19)+1,encode_IRtoMPS(0x1a)+1,encode_IRtoMPS(0x1b)+1,encode_IRtoMPS(0x1c)+1,encode_IRtoMPS(0x1d)+1,encode_IRtoMPS(0x1e)+1,encode_IRtoMPS(0x1f)+1]: 
+                        ALUState = 1
+                    if MPSeqData in [encode_IRtoMPS(0x20)+1,encode_IRtoMPS(0x21)+1,encode_IRtoMPS(0x22)+1,encode_IRtoMPS(0x23)+1,encode_IRtoMPS(0x24)+1,encode_IRtoMPS(0x25)+1,encode_IRtoMPS(0x26)+1,encode_IRtoMPS(0x27)+1,encode_IRtoMPS(0x28)+1,encode_IRtoMPS(0x29)+1,encode_IRtoMPS(0x2a)+1,encode_IRtoMPS(0x2b)+1,encode_IRtoMPS(0x2c)+1,encode_IRtoMPS(0x2d)+1,encode_IRtoMPS(0x2e)+1,encode_IRtoMPS(0x2f)+1]: 
+                        ALUState = 2
+                    if MPSeqData in [encode_IRtoMPS(0x60)+1,encode_IRtoMPS(0x61)+1,encode_IRtoMPS(0x62)+1,encode_IRtoMPS(0x63)+1,encode_IRtoMPS(0x64)+1,encode_IRtoMPS(0x65)+1,encode_IRtoMPS(0x66)+1,encode_IRtoMPS(0x67)+1,encode_IRtoMPS(0x68)+1,encode_IRtoMPS(0x69)+1,encode_IRtoMPS(0x6a)+1,encode_IRtoMPS(0x6b)+1,encode_IRtoMPS(0x6c)+1,encode_IRtoMPS(0x6d)+1,encode_IRtoMPS(0x6e)+1,encode_IRtoMPS(0x6f)+1]: 
+                        ALUState = 6
+                    if MPSeqData in [encode_IRtoMPS(0x10)+1,encode_IRtoMPS(0x11)+1,encode_IRtoMPS(0x12)+1,encode_IRtoMPS(0x13)+1,encode_IRtoMPS(0x14)+1,encode_IRtoMPS(0x15)+1,encode_IRtoMPS(0x16)+1,encode_IRtoMPS(0x17)+1,encode_IRtoMPS(0x18)+1,encode_IRtoMPS(0x19)+1,encode_IRtoMPS(0x1a)+1,encode_IRtoMPS(0x1b)+1,encode_IRtoMPS(0x1c)+1,encode_IRtoMPS(0x1d)+1,encode_IRtoMPS(0x1e)+1,encode_IRtoMPS(0x1f)+1,encode_IRtoMPS(0x20)+1,encode_IRtoMPS(0x21)+1,encode_IRtoMPS(0x22)+1,encode_IRtoMPS(0x23)+1,encode_IRtoMPS(0x24)+1,encode_IRtoMPS(0x25)+1,encode_IRtoMPS(0x26)+1,encode_IRtoMPS(0x27)+1,encode_IRtoMPS(0x28)+1,encode_IRtoMPS(0x29)+1,encode_IRtoMPS(0x2a)+1,encode_IRtoMPS(0x2b)+1,encode_IRtoMPS(0x2c)+1,encode_IRtoMPS(0x2d)+1,encode_IRtoMPS(0x2e)+1,encode_IRtoMPS(0x2f)+1,encode_IRtoMPS(0x60)+1,encode_IRtoMPS(0x61)+1,encode_IRtoMPS(0x62)+1,encode_IRtoMPS(0x63)+1,encode_IRtoMPS(0x64)+1,encode_IRtoMPS(0x65)+1,encode_IRtoMPS(0x66)+1,encode_IRtoMPS(0x67)+1,encode_IRtoMPS(0x68)+1,encode_IRtoMPS(0x69)+1,encode_IRtoMPS(0x6a)+1,encode_IRtoMPS(0x6b)+1,encode_IRtoMPS(0x6c)+1,encode_IRtoMPS(0x6d)+1,encode_IRtoMPS(0x6e)+1,encode_IRtoMPS(0x6f)+1]:
+                        a = ALUData[0]; b = ALUData[1]
+                        if a&0x80: a=-((a^0xff)+1)
+                        if b&0x80: b=-((b^0xff)+1)
+                        if MPSeqData in [encode_IRtoMPS(0x10)+1,encode_IRtoMPS(0x11)+1,encode_IRtoMPS(0x12)+1,encode_IRtoMPS(0x13)+1,encode_IRtoMPS(0x14)+1,encode_IRtoMPS(0x15)+1,encode_IRtoMPS(0x16)+1,encode_IRtoMPS(0x17)+1,encode_IRtoMPS(0x18)+1,encode_IRtoMPS(0x19)+1,encode_IRtoMPS(0x1a)+1,encode_IRtoMPS(0x1b)+1,encode_IRtoMPS(0x1c)+1,encode_IRtoMPS(0x1d)+1,encode_IRtoMPS(0x1e)+1,encode_IRtoMPS(0x1f)+1]: 
+                            ALUData[2] = a+b
+                        else: ALUData[2] = b-a
+                    if ALUData[2]<0: FRData[0] = 1 # S
+                    if ALUData[2]==0: FRData[1] = 1 # Z
+                    if parity(ALUData[2])==1: FRData[5] = 1 # P
+                    if ALUData[2]>127: FRData[7] = 1 # C
+                    ALUData[2] &= 0xff # twos complement
+                    update_ALUData(alu, ALUData, ALUState)
+                    update_FRData(f_r, FRData)
                 # movi-4
                 if MPSeqData in  [encode_IRtoMPS(0x90)+1, encode_IRtoMPS(0x91)+1, encode_IRtoMPS(0x92)+1, encode_IRtoMPS(0x93)+1, encode_IRtoMPS(0x94)+1, encode_IRtoMPS(0x95)+1, encode_IRtoMPS(0x96)+1, encode_IRtoMPS(0x97)+1, encode_IRtoMPS(0x98)+1, encode_IRtoMPS(0x99)+1, encode_IRtoMPS(0x9A)+1, encode_IRtoMPS(0x9B)+1, encode_IRtoMPS(0x9C)+1, encode_IRtoMPS(0x9D)+1, encode_IRtoMPS(0x9E)+1, encode_IRtoMPS(0x9F)+1]:
                     # RD 
@@ -220,6 +266,12 @@ def main(stdscr):
                     clock_cycle[0] = -1
                     # Stop Clock
                     clock.immediate_stop()
+                # add,sub,xor,and,or,cmp-3
+                if MPSeqData in [encode_IRtoMPS(0x10),encode_IRtoMPS(0x11),encode_IRtoMPS(0x12),encode_IRtoMPS(0x13),encode_IRtoMPS(0x14),encode_IRtoMPS(0x15),encode_IRtoMPS(0x16),encode_IRtoMPS(0x17),encode_IRtoMPS(0x18),encode_IRtoMPS(0x19),encode_IRtoMPS(0x1a),encode_IRtoMPS(0x1b),encode_IRtoMPS(0x1c),encode_IRtoMPS(0x1d),encode_IRtoMPS(0x1e),encode_IRtoMPS(0x1f),encode_IRtoMPS(0x20),encode_IRtoMPS(0x21),encode_IRtoMPS(0x22),encode_IRtoMPS(0x23),encode_IRtoMPS(0x24),encode_IRtoMPS(0x25),encode_IRtoMPS(0x26),encode_IRtoMPS(0x27),encode_IRtoMPS(0x28),encode_IRtoMPS(0x29),encode_IRtoMPS(0x2a),encode_IRtoMPS(0x2b),encode_IRtoMPS(0x2c),encode_IRtoMPS(0x2d),encode_IRtoMPS(0x2e),encode_IRtoMPS(0x2f),encode_IRtoMPS(0x30),encode_IRtoMPS(0x31),encode_IRtoMPS(0x32),encode_IRtoMPS(0x33),encode_IRtoMPS(0x34),encode_IRtoMPS(0x35),encode_IRtoMPS(0x36),encode_IRtoMPS(0x37),encode_IRtoMPS(0x38),encode_IRtoMPS(0x39),encode_IRtoMPS(0x3a),encode_IRtoMPS(0x3b),encode_IRtoMPS(0x3c),encode_IRtoMPS(0x3d),encode_IRtoMPS(0x3e),encode_IRtoMPS(0x3f),encode_IRtoMPS(0x40),encode_IRtoMPS(0x41),encode_IRtoMPS(0x42),encode_IRtoMPS(0x43),encode_IRtoMPS(0x44),encode_IRtoMPS(0x45),encode_IRtoMPS(0x46),encode_IRtoMPS(0x47),encode_IRtoMPS(0x48),encode_IRtoMPS(0x49),encode_IRtoMPS(0x4a),encode_IRtoMPS(0x4b),encode_IRtoMPS(0x4c),encode_IRtoMPS(0x4d),encode_IRtoMPS(0x4e),encode_IRtoMPS(0x4f),encode_IRtoMPS(0x50),encode_IRtoMPS(0x51),encode_IRtoMPS(0x52),encode_IRtoMPS(0x53),encode_IRtoMPS(0x54),encode_IRtoMPS(0x55),encode_IRtoMPS(0x56),encode_IRtoMPS(0x57),encode_IRtoMPS(0x58),encode_IRtoMPS(0x59),encode_IRtoMPS(0x5a),encode_IRtoMPS(0x5b),encode_IRtoMPS(0x5c),encode_IRtoMPS(0x5d),encode_IRtoMPS(0x5e),encode_IRtoMPS(0x5f),encode_IRtoMPS(0x60),encode_IRtoMPS(0x61),encode_IRtoMPS(0x62),encode_IRtoMPS(0x63),encode_IRtoMPS(0x64),encode_IRtoMPS(0x65),encode_IRtoMPS(0x66),encode_IRtoMPS(0x67),encode_IRtoMPS(0x68),encode_IRtoMPS(0x69),encode_IRtoMPS(0x6a),encode_IRtoMPS(0x6b),encode_IRtoMPS(0x6c),encode_IRtoMPS(0x6d),encode_IRtoMPS(0x6e),encode_IRtoMPS(0x6f)]:
+                    # Lor
+                    ORData = value[0]
+                    ORState = color("blue")
+                    update_ORData(op_r, ORData, ORState)
                 # movs-3
                 if MPSeqData in [encode_IRtoMPS(0x70), encode_IRtoMPS(0x71), encode_IRtoMPS(0x72), encode_IRtoMPS(0x73), encode_IRtoMPS(0x74), encode_IRtoMPS(0x75), encode_IRtoMPS(0x76), encode_IRtoMPS(0x77), encode_IRtoMPS(0x78), encode_IRtoMPS(0x79), encode_IRtoMPS(0x7A), encode_IRtoMPS(0x7B), encode_IRtoMPS(0x7C), encode_IRtoMPS(0x7D), encode_IRtoMPS(0x7E), encode_IRtoMPS(0x7F)]:
                     # Lar
@@ -258,6 +310,18 @@ def main(stdscr):
                     ORData = value[0]
                     ORState = color("blue")
                     update_ORData(op_r, ORData, ORState)
+                # add,sub,xor,and,or,cmp-4
+                if MPSeqData in [encode_IRtoMPS(0x10)+1,encode_IRtoMPS(0x11)+1,encode_IRtoMPS(0x12)+1,encode_IRtoMPS(0x13)+1,encode_IRtoMPS(0x14)+1,encode_IRtoMPS(0x15)+1,encode_IRtoMPS(0x16)+1,encode_IRtoMPS(0x17)+1,encode_IRtoMPS(0x18)+1,encode_IRtoMPS(0x19)+1,encode_IRtoMPS(0x1a)+1,encode_IRtoMPS(0x1b)+1,encode_IRtoMPS(0x1c)+1,encode_IRtoMPS(0x1d)+1,encode_IRtoMPS(0x1e)+1,encode_IRtoMPS(0x1f)+1,encode_IRtoMPS(0x20)+1,encode_IRtoMPS(0x21)+1,encode_IRtoMPS(0x22)+1,encode_IRtoMPS(0x23)+1,encode_IRtoMPS(0x24)+1,encode_IRtoMPS(0x25)+1,encode_IRtoMPS(0x26)+1,encode_IRtoMPS(0x27)+1,encode_IRtoMPS(0x28)+1,encode_IRtoMPS(0x29)+1,encode_IRtoMPS(0x2a)+1,encode_IRtoMPS(0x2b)+1,encode_IRtoMPS(0x2c)+1,encode_IRtoMPS(0x2d)+1,encode_IRtoMPS(0x2e)+1,encode_IRtoMPS(0x2f)+1,encode_IRtoMPS(0x30)+1,encode_IRtoMPS(0x31)+1,encode_IRtoMPS(0x32)+1,encode_IRtoMPS(0x33)+1,encode_IRtoMPS(0x34)+1,encode_IRtoMPS(0x35)+1,encode_IRtoMPS(0x36)+1,encode_IRtoMPS(0x37)+1,encode_IRtoMPS(0x38)+1,encode_IRtoMPS(0x39)+1,encode_IRtoMPS(0x3a)+1,encode_IRtoMPS(0x3b)+1,encode_IRtoMPS(0x3c)+1,encode_IRtoMPS(0x3d)+1,encode_IRtoMPS(0x3e)+1,encode_IRtoMPS(0x3f)+1,encode_IRtoMPS(0x40)+1,encode_IRtoMPS(0x41)+1,encode_IRtoMPS(0x42)+1,encode_IRtoMPS(0x43)+1,encode_IRtoMPS(0x44)+1,encode_IRtoMPS(0x45)+1,encode_IRtoMPS(0x46)+1,encode_IRtoMPS(0x47)+1,encode_IRtoMPS(0x48)+1,encode_IRtoMPS(0x49)+1,encode_IRtoMPS(0x4a)+1,encode_IRtoMPS(0x4b)+1,encode_IRtoMPS(0x4c)+1,encode_IRtoMPS(0x4d)+1,encode_IRtoMPS(0x4e)+1,encode_IRtoMPS(0x4f)+1,encode_IRtoMPS(0x50)+1,encode_IRtoMPS(0x51)+1,encode_IRtoMPS(0x52)+1,encode_IRtoMPS(0x53)+1,encode_IRtoMPS(0x54)+1,encode_IRtoMPS(0x55)+1,encode_IRtoMPS(0x56)+1,encode_IRtoMPS(0x57)+1,encode_IRtoMPS(0x58)+1,encode_IRtoMPS(0x59)+1,encode_IRtoMPS(0x5a)+1,encode_IRtoMPS(0x5b)+1,encode_IRtoMPS(0x5c)+1,encode_IRtoMPS(0x5d)+1,encode_IRtoMPS(0x5e)+1,encode_IRtoMPS(0x5f)+1]:
+                    # Lar
+                    ARData = ALUData[2]
+                    ARState = color("blue")
+                    update_ARData(ac_r, ARData, ARState)
+                    # End
+                    clock_cycle[0] = -1
+                # cmp-4
+                if MPSeqData in [encode_IRtoMPS(0x60)+1,encode_IRtoMPS(0x61)+1,encode_IRtoMPS(0x62)+1,encode_IRtoMPS(0x63)+1,encode_IRtoMPS(0x64)+1,encode_IRtoMPS(0x65)+1,encode_IRtoMPS(0x66)+1,encode_IRtoMPS(0x67)+1,encode_IRtoMPS(0x68)+1,encode_IRtoMPS(0x69)+1,encode_IRtoMPS(0x6a)+1,encode_IRtoMPS(0x6b)+1,encode_IRtoMPS(0x6c)+1,encode_IRtoMPS(0x6d)+1,encode_IRtoMPS(0x6e)+1,encode_IRtoMPS(0x6f)+1]:
+                    # End
+                    clock_cycle[0] = -1
                 # movi-4
                 if MPSeqData in [encode_IRtoMPS(0x90)+1, encode_IRtoMPS(0x91)+1, encode_IRtoMPS(0x92)+1, encode_IRtoMPS(0x93)+1, encode_IRtoMPS(0x94)+1, encode_IRtoMPS(0x95)+1, encode_IRtoMPS(0x96)+1, encode_IRtoMPS(0x97)+1, encode_IRtoMPS(0x98)+1, encode_IRtoMPS(0x99)+1, encode_IRtoMPS(0x9A)+1, encode_IRtoMPS(0x9B)+1, encode_IRtoMPS(0x9C)+1, encode_IRtoMPS(0x9D)+1, encode_IRtoMPS(0x9E)+1, encode_IRtoMPS(0x9F)+1]:
                     RegNum = Srg(MPSeqData)
@@ -283,6 +347,7 @@ def main(stdscr):
                     update_ARData(ac_r, ARData, ARState)
                     # End
                     clock_cycle[0] = -1
+                # cmi-5
                 if MPSeqData == encode_IRtoMPS(0x06)+2:
                     # End
                     clock_cycle[0] = -1
