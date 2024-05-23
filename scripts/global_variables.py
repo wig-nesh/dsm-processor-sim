@@ -1,8 +1,7 @@
 main_mid = 51
 
 extMemData = [0x00]*256
-extMemState = [0]*256 # 0-empty 1-program 2-data segment 3-stack 4-other, also used for color
-extMemState[-10:] = [3]*10 # temp stack
+extMemState = [0]*256 
 
 RGData = [0x00]*16
 RGState = [0]*16 # 0-empty, 1-used, 2-enable, 3-load

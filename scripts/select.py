@@ -97,3 +97,35 @@ def Srg(MPSeqData):
     if MPSeqData==encode_IRtoMPS(0xbd)+1: return 13
     if MPSeqData==encode_IRtoMPS(0xbe)+1: return 14
     if MPSeqData==encode_IRtoMPS(0xbf)+1: return 15
+    if MPSeqData==encode_IRtoMPS(0xc0)+2: return 0
+    if MPSeqData==encode_IRtoMPS(0xc1)+2: return 1
+    if MPSeqData==encode_IRtoMPS(0xc2)+2: return 2
+    if MPSeqData==encode_IRtoMPS(0xc3)+2: return 3
+    if MPSeqData==encode_IRtoMPS(0xc4)+2: return 4
+    if MPSeqData==encode_IRtoMPS(0xc5)+2: return 5
+    if MPSeqData==encode_IRtoMPS(0xc6)+2: return 6
+    if MPSeqData==encode_IRtoMPS(0xc7)+2: return 7
+    if MPSeqData==encode_IRtoMPS(0xc8)+2: return 8
+    if MPSeqData==encode_IRtoMPS(0xc9)+2: return 9
+    if MPSeqData==encode_IRtoMPS(0xca)+2: return 10
+    if MPSeqData==encode_IRtoMPS(0xcb)+2: return 11
+    if MPSeqData==encode_IRtoMPS(0xcc)+2: return 12
+    if MPSeqData==encode_IRtoMPS(0xcd)+2: return 13
+    if MPSeqData==encode_IRtoMPS(0xce)+2: return 14
+    if MPSeqData==encode_IRtoMPS(0xcf)+2: return 15
+    if MPSeqData==encode_IRtoMPS(0xd0)+1: return 0
+    if MPSeqData==encode_IRtoMPS(0xd1)+1: return 1
+    if MPSeqData==encode_IRtoMPS(0xd2)+1: return 2
+    if MPSeqData==encode_IRtoMPS(0xd3)+1: return 3
+    if MPSeqData==encode_IRtoMPS(0xd4)+1: return 4
+    if MPSeqData==encode_IRtoMPS(0xd5)+1: return 5
+    if MPSeqData==encode_IRtoMPS(0xd6)+1: return 6
+    if MPSeqData==encode_IRtoMPS(0xd7)+1: return 7
+    if MPSeqData==encode_IRtoMPS(0xd8)+1: return 8
+    if MPSeqData==encode_IRtoMPS(0xd9)+1: return 9
+    if MPSeqData==encode_IRtoMPS(0xda)+1: return 10
+    if MPSeqData==encode_IRtoMPS(0xdb)+1: return 11
+    if MPSeqData==encode_IRtoMPS(0xdc)+1: return 12
+    if MPSeqData==encode_IRtoMPS(0xdd)+1: return 13
+    if MPSeqData==encode_IRtoMPS(0xde)+1: return 14
+    if MPSeqData==encode_IRtoMPS(0xdf)+1: return 15

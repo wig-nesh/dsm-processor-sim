@@ -1,14 +1,13 @@
 movi0 05
-movs0
-adi 0e
-movd1
-sbi 05
-movd2
-xri 04
-movd3
-ani 0f
-movd4
-ori 0c
-movd5
-cmi 0e
+push0
+push0
+push0
+push0
+push0
+push0
+push0
+push0
+push0
+pop1
+pop2
 stop
