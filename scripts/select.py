@@ -129,3 +129,14 @@ def Srg(MPSeqData):
     if MPSeqData==encode_IRtoMPS(0xdd)+1: return 13
     if MPSeqData==encode_IRtoMPS(0xde)+1: return 14
     if MPSeqData==encode_IRtoMPS(0xdf)+1: return 15
+
+
+def Sfl(MPSeqData):
+    if MPSeqData==encode_IRtoMPS(0xe0): return 0
+    if MPSeqData==encode_IRtoMPS(0xe1): return 1
+    if MPSeqData==encode_IRtoMPS(0xe5): return 5
+    if MPSeqData==encode_IRtoMPS(0xe7): return 7
+    if MPSeqData==encode_IRtoMPS(0xe8): return 0
+    if MPSeqData==encode_IRtoMPS(0xe9): return 1
+    if MPSeqData==encode_IRtoMPS(0xed): return 5
+    if MPSeqData==encode_IRtoMPS(0xef): return 7

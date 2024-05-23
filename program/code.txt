@@ -1,13 +1,8 @@
 movi0 05
-push0
-push0
-push0
-push0
-push0
-push0
-push0
-push0
-push0
-pop1
-pop2
+movi1 09
+movs0
+sub0
+movs1
+jumprz 
+add0
 stop
