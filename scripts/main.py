@@ -58,9 +58,16 @@ def main(stdscr):
     curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK) 
 
+    # upload program to memory
+    with open("program\compiled_code.txt",'r') as f:
+        i = 0
+        for line in f.readlines():
+            extMemData[i] = int(line,16)
+            i += 1
+
     clock_state = [False]
     clock_cycle = [0]
-    instruction_address = [0]
+    address = [0]
     value = [0]
     freq = 20
 
@@ -99,7 +106,7 @@ def main(stdscr):
                 update_PCData(pc, PCData, PCState)
             elif clock_cycle[0]==1: # 2
                 # RD
-                instruction_address[0] = extMemData[MRData]
+                address[0] = extMemData[MRData]
                 extMemState[MRData] = color("green")
                 update_ExtMemData(ext_mem_display, extMemData, extMemState)
 
@@ -129,17 +136,33 @@ def main(stdscr):
                     value[0] = RGData[RegNum]
                     RGState[RegNum] = color("green")
                     update_RGData(r_arr, RGData, RGState)
+                    ALUData[1] = ARData
+                    ALUData[2] = ALUData[1]
+                    ALUState = 0
+                    update_ALUData(alu, ALUData, ALUState)
+                    if ALUData[2]<0: FRData[0] = 1 # S
+                    if ALUData[2]==0: FRData[1] = 1 # Z
+                    if parity(ALUData[2])==1: FRData[5] = 1 # P
+                    if ALUData[2]>127: FRData[7] = 1 # C
+                    ALUData[2] &= 0xff # twos complement
+                    update_FRData(f_r, FRData)
                 # movd-3
                 if MPSeqData in [encode_IRtoMPS(0x80), encode_IRtoMPS(0x81), encode_IRtoMPS(0x82), encode_IRtoMPS(0x83), encode_IRtoMPS(0x84), encode_IRtoMPS(0x85), encode_IRtoMPS(0x86), encode_IRtoMPS(0x87), encode_IRtoMPS(0x88), encode_IRtoMPS(0x89), encode_IRtoMPS(0x8A), encode_IRtoMPS(0x8B), encode_IRtoMPS(0x8C), encode_IRtoMPS(0x8D), encode_IRtoMPS(0x8E), encode_IRtoMPS(0x8F)]:
-                    #Ear
+                    # Ear
                     value[0] = ARData
                     ARState = color("green")
                     update_ARData(ac_r, ARData, ARState)
                 # movi-3
-                elif MPSeqData in [encode_IRtoMPS(0x90), encode_IRtoMPS(0x91), encode_IRtoMPS(0x92), encode_IRtoMPS(0x93), encode_IRtoMPS(0x94), encode_IRtoMPS(0x95), encode_IRtoMPS(0x96), encode_IRtoMPS(0x97), encode_IRtoMPS(0x98), encode_IRtoMPS(0x99), encode_IRtoMPS(0x9A), encode_IRtoMPS(0x9B), encode_IRtoMPS(0x9C), encode_IRtoMPS(0x9D), encode_IRtoMPS(0x9E), encode_IRtoMPS(0x9F)]:
+                if MPSeqData in [encode_IRtoMPS(0x90), encode_IRtoMPS(0x91), encode_IRtoMPS(0x92), encode_IRtoMPS(0x93), encode_IRtoMPS(0x94), encode_IRtoMPS(0x95), encode_IRtoMPS(0x96), encode_IRtoMPS(0x97), encode_IRtoMPS(0x98), encode_IRtoMPS(0x99), encode_IRtoMPS(0x9A), encode_IRtoMPS(0x9B), encode_IRtoMPS(0x9C), encode_IRtoMPS(0x9D), encode_IRtoMPS(0x9E), encode_IRtoMPS(0x9F)]:
                     # Epc
                     PCState = color("green")
                     update_PCData(pc, PCData, PCState)
+                # stor-3
+                if MPSeqData in [encode_IRtoMPS(0xa0),encode_IRtoMPS(0xa1),encode_IRtoMPS(0xa2),encode_IRtoMPS(0xa3),encode_IRtoMPS(0xa4),encode_IRtoMPS(0xa5),encode_IRtoMPS(0xa6),encode_IRtoMPS(0xa7),encode_IRtoMPS(0xa8),encode_IRtoMPS(0xa9),encode_IRtoMPS(0xaa),encode_IRtoMPS(0xab),encode_IRtoMPS(0xac),encode_IRtoMPS(0xad),encode_IRtoMPS(0xae),encode_IRtoMPS(0xaf),encode_IRtoMPS(0xb0),encode_IRtoMPS(0xb1),encode_IRtoMPS(0xb2),encode_IRtoMPS(0xb3),encode_IRtoMPS(0xb4),encode_IRtoMPS(0xb5),encode_IRtoMPS(0xb6),encode_IRtoMPS(0xb7),encode_IRtoMPS(0xb8),encode_IRtoMPS(0xb9),encode_IRtoMPS(0xba),encode_IRtoMPS(0xbb),encode_IRtoMPS(0xbc),encode_IRtoMPS(0xbd),encode_IRtoMPS(0xbe),encode_IRtoMPS(0xbf)]:
+                    # Ear
+                    address[0] = ARData
+                    ARState = color("green")
+                    update_ARData(ac_r, ARData, ARState)    
 
             elif clock_cycle[0]==3:
                 # adi,sbi,xri,ani,ori,cmi-4
@@ -191,9 +214,22 @@ def main(stdscr):
                 if MPSeqData in  [encode_IRtoMPS(0x90)+1, encode_IRtoMPS(0x91)+1, encode_IRtoMPS(0x92)+1, encode_IRtoMPS(0x93)+1, encode_IRtoMPS(0x94)+1, encode_IRtoMPS(0x95)+1, encode_IRtoMPS(0x96)+1, encode_IRtoMPS(0x97)+1, encode_IRtoMPS(0x98)+1, encode_IRtoMPS(0x99)+1, encode_IRtoMPS(0x9A)+1, encode_IRtoMPS(0x9B)+1, encode_IRtoMPS(0x9C)+1, encode_IRtoMPS(0x9D)+1, encode_IRtoMPS(0x9E)+1, encode_IRtoMPS(0x9F)+1]:
                     # RD 
                     value[0] = extMemData[MRData]
-                    extMemState[MRData] = color("green")
+                    extMemState[MRData] = color("red")
                     update_ExtMemData(ext_mem_display, extMemData, extMemState)
-            
+                # stor-4
+                if MPSeqData in [encode_IRtoMPS(0xa0)+1,encode_IRtoMPS(0xa1)+1,encode_IRtoMPS(0xa2)+1,encode_IRtoMPS(0xa3)+1,encode_IRtoMPS(0xa4)+1,encode_IRtoMPS(0xa5)+1,encode_IRtoMPS(0xa6)+1,encode_IRtoMPS(0xa7)+1,encode_IRtoMPS(0xa8)+1,encode_IRtoMPS(0xa9)+1,encode_IRtoMPS(0xaa)+1,encode_IRtoMPS(0xab)+1,encode_IRtoMPS(0xac)+1,encode_IRtoMPS(0xad)+1,encode_IRtoMPS(0xae)+1,encode_IRtoMPS(0xaf)+1]:
+                    # Erg
+                    RegNum = Srg(MPSeqData)
+                    address[0] = RGData[RegNum]
+                    RGState[RegNum] = color("green")
+                    update_RGData(r_arr, RGData, RGState)
+                # load-4
+                if MPSeqData in [encode_IRtoMPS(0xb0)+1,encode_IRtoMPS(0xb1)+1,encode_IRtoMPS(0xb2)+1,encode_IRtoMPS(0xb3)+1,encode_IRtoMPS(0xb4)+1,encode_IRtoMPS(0xb5)+1,encode_IRtoMPS(0xb6)+1,encode_IRtoMPS(0xb7)+1,encode_IRtoMPS(0xb8)+1,encode_IRtoMPS(0xb9)+1,encode_IRtoMPS(0xba)+1,encode_IRtoMPS(0xbb)+1,encode_IRtoMPS(0xbc)+1,encode_IRtoMPS(0xbd)+1,encode_IRtoMPS(0xbe)+1,encode_IRtoMPS(0xbf)+1]:
+                    # RD
+                    value[0] = extMemData[MRData]
+                    extMemState[MRData] = color("red")
+                    update_ExtMemData(ext_mem_display, extMemData, extMemState)
+
             elif clock_cycle[0]==4:
                 # adi,sbi,xri,ani,ori,cmi-5
                 if MPSeqData in [encode_IRtoMPS(0x01)+2, encode_IRtoMPS(0x02)+2, encode_IRtoMPS(0x03)+2, encode_IRtoMPS(0x04)+2, encode_IRtoMPS(0x05)+2, encode_IRtoMPS(0x06)+2]:
@@ -239,7 +275,7 @@ def main(stdscr):
                 update_PCData(pc, PCData, color("yellow"))
             elif clock_cycle[0]==1: # 2
                 # Lir
-                IRData = instruction_address[0]
+                IRData = address[0]
                 update_IRData(i_r, IRData, color("blue"))
                 # Lms
                 MPSeqData = encode_IRtoMPS(IRData)
@@ -297,6 +333,11 @@ def main(stdscr):
                     # Ipc
                     PCData += 1
                     update_PCData(pc, PCData, color("yellow"))
+                # stor,load-3
+                if MPSeqData in [encode_IRtoMPS(0xa0),encode_IRtoMPS(0xa1),encode_IRtoMPS(0xa2),encode_IRtoMPS(0xa3),encode_IRtoMPS(0xa4),encode_IRtoMPS(0xa5),encode_IRtoMPS(0xa6),encode_IRtoMPS(0xa7),encode_IRtoMPS(0xa8),encode_IRtoMPS(0xa9),encode_IRtoMPS(0xaa),encode_IRtoMPS(0xab),encode_IRtoMPS(0xac),encode_IRtoMPS(0xad),encode_IRtoMPS(0xae),encode_IRtoMPS(0xaf),encode_IRtoMPS(0xb0),encode_IRtoMPS(0xb1),encode_IRtoMPS(0xb2),encode_IRtoMPS(0xb3),encode_IRtoMPS(0xb4),encode_IRtoMPS(0xb5),encode_IRtoMPS(0xb6),encode_IRtoMPS(0xb7),encode_IRtoMPS(0xb8),encode_IRtoMPS(0xb9),encode_IRtoMPS(0xba),encode_IRtoMPS(0xbb),encode_IRtoMPS(0xbc),encode_IRtoMPS(0xbd),encode_IRtoMPS(0xbe),encode_IRtoMPS(0xbf)]:
+                    # Lmr
+                    MRData = address[0]
+                    update_MRData(ma_r, MRData, color("blue"))
                 
                 MPSeqData += 1
                 update_MPSeqData(mp_s, MPSeqData, color("blue"))
@@ -331,7 +372,24 @@ def main(stdscr):
                     update_RGData(r_arr, RGData, RGState)
                     # End
                     clock_cycle[0] = -1
-                
+                # stor-4
+                if MPSeqData in [encode_IRtoMPS(0xa0)+1,encode_IRtoMPS(0xa1)+1,encode_IRtoMPS(0xa2)+1,encode_IRtoMPS(0xa3)+1,encode_IRtoMPS(0xa4)+1,encode_IRtoMPS(0xa5)+1,encode_IRtoMPS(0xa6)+1,encode_IRtoMPS(0xa7)+1,encode_IRtoMPS(0xa8)+1,encode_IRtoMPS(0xa9)+1,encode_IRtoMPS(0xaa)+1,encode_IRtoMPS(0xab)+1,encode_IRtoMPS(0xac)+1,encode_IRtoMPS(0xad)+1,encode_IRtoMPS(0xae)+1,encode_IRtoMPS(0xaf)+1]:
+                    # WR
+                    extMemData[MRData] = value[0]
+                    extMemState[MRData] = color("blue")
+                    update_ExtMemData(ext_mem_display, extMemData, extMemState)
+                    # End
+                    clock_cycle[0] = -1
+                # load-4
+                if MPSeqData in [encode_IRtoMPS(0xb0)+1,encode_IRtoMPS(0xb1)+1,encode_IRtoMPS(0xb2)+1,encode_IRtoMPS(0xb3)+1,encode_IRtoMPS(0xb4)+1,encode_IRtoMPS(0xb5)+1,encode_IRtoMPS(0xb6)+1,encode_IRtoMPS(0xb7)+1,encode_IRtoMPS(0xb8)+1,encode_IRtoMPS(0xb9)+1,encode_IRtoMPS(0xba)+1,encode_IRtoMPS(0xbb)+1,encode_IRtoMPS(0xbc)+1,encode_IRtoMPS(0xbd)+1,encode_IRtoMPS(0xbe)+1,encode_IRtoMPS(0xbf)+1]:
+                    # Lrg
+                    RegNum = Srg(MPSeqData)
+                    RGData[RegNum] = address[0]
+                    RGState[RegNum] = color("blue")
+                    update_RGData(r_arr, RGData, RGState)
+                    # End
+                    clock_cycle[0] = -1
+                    
                 MPSeqData += 1
                 update_MPSeqData(mp_s, MPSeqData, color("blue"))
                 MPMemData = encode_MPStoCSSig(MPSeqData)

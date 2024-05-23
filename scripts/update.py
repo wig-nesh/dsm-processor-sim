@@ -120,13 +120,9 @@ def update_RGData(window, RGData=[0x00]*16, RGState=[0]*16):
 
 def update_ALUData(window, ALUData=[0x00]*3, ALUState=0):
     for i in range(3):
-        # if i==2: 
-        #     window.addstr(1+i, 4, "●", curses.color_pair(ALUState))
-        #     window.addstr(1+i, 5, f" {ALUData[i]:02x} {ALUData[i]:08b}")
-        # else: window.addstr(1+i, 5, f" {ALUData[i]:02x} {ALUData[i]:08b}")
         window.addstr(2, 3, f"OR {ALUData[0]:02x} {ALUData[0]:08b}")
         window.addstr(1, 3, f"AR {ALUData[1]:02x} {ALUData[1]:08b}")
-        alu_states = [' ','+','-','^','&','|','C']
+        alu_states = ['P','+','-','^','&','|','C']
         window.addstr(3, 4, f"{alu_states[ALUState]} {ALUData[2]:02x} {ALUData[2]:08b}", curses.color_pair(ALUState))
     window.refresh()
 
