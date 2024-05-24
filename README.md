@@ -4,6 +4,7 @@
 - Make sure you have the `curses` module for python installed, and use a full screen terminal window.
 - Type your assembly program using the commands given below into `program/code.txt` 
 - Compile it using `python program/compiler.py`
+- A test program is provided in `code.txt` already, which calculates the n-th Fibonacci number.
 - Run it using `python scripts/main.py`
 - If you get any errors, try reducing your display scaling and retry. It would most probably be an issue related to your terminal not having enough space.
 
@@ -37,4 +38,5 @@
  `cd<FL> xx` | if flag value is 1, program stores current address in stack and jumps to given address xx 
  `cr<FL>` | if flag value is 1, program stores current address in stack and jumps to address in AR 
 
- 
+## Credits
+A lot of the architecture design was taken from the document provided at the end of Digital Systems and Microcontrollers (EC2.101) taken at IIIT Hyderabad in Monsoon-23. This project would not be possible without it.
