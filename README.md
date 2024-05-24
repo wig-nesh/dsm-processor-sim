@@ -1,5 +1,7 @@
 # 8-bit Microprocessor Simulator
 
+![alt text](image.png)
+
 ## How to Use
 - Make sure you have the `curses` module for python installed, and use a full screen terminal window.
 - Type your assembly program using the commands given below into `program/code.txt` 
