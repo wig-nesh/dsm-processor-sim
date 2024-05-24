@@ -5,6 +5,7 @@
 - Type your assembly program using the Commands given below into `program/code.txt` 
 - Compile it using `python program/compiler.py`
 - Run it using `python scripts/main.py`
+- If you get any errors, try reducing your display scaling and retry, it would most probably be an issue related to your terminal not having enough space.
 
 ## Commands:
  **Command** | **Action** 

@@ -1,5 +1,6 @@
-with open("program\code.txt",'r') as f:
-    with open("program\compiled_code.txt",'w') as g:
+import os.path as osp
+with open(osp.join("program","code.txt"),'r') as f:
+    with open(osp.join("program","compiled_code.txt"),'w') as g:
         code = f.readlines()
         for instruction in code:
             if instruction[:3] == "adi":
