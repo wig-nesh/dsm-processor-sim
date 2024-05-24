@@ -1,4 +1,4 @@
-movi4 0a
+movi4 09
 movi1 00
 movi2 01
 movi3 02
