@@ -9,7 +9,7 @@ RGState = [0]*16 # 0-empty, 1-used, 2-enable, 3-load
 ALUData = [0x00]*3
 ALUState = 0 
 
-FRData = [0]*8 # S Z X X X P X C
+FRData = [0]*8 # S Z X X N P X C
 
 MRData = 0x00
 MRState = 0

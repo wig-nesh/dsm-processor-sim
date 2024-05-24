@@ -1,8 +1,30 @@
-movi0 05
-movi1 09
-movs0
-sub0
+movi4 0a
+movi1 00
+movi2 01
+movi3 02
+movs4
+cmi 00
+jumpdz 26
+movs4
+cmi 01
+jumpdz 26
+movi0 00
 movs1
-jumprz 
 add0
+movd0
+movs2
+add0
+movd0
+movs2
+movd1
+movs0
+movd2
+movs3
+adi 01
+movd3
+movs3
+cmp4
+jumpdn 12   
+movs2
+movd0
 stop

@@ -20,6 +20,7 @@ with open("program\code.txt",'r') as f:
                 g.write("0")
                 if instruction[4].lower() == "s": g.write("8\n")
                 elif instruction[4].lower() == "z": g.write("9\n")
+                elif instruction[4].lower() == "n": g.write("e\n")
                 elif instruction[4].lower() == "p": g.write("d\n")
                 elif instruction[4].lower() == "c": g.write("f\n")
             elif instruction[:3] in ["add","sub","xor","and","or","cmp"]:
@@ -112,12 +113,30 @@ with open("program\code.txt",'r') as f:
                 if instruction[4] == 'd':
                     if instruction[5].lower() == "s": g.write("0")
                     elif instruction[5].lower() == "z": g.write("1")
+                    elif instruction[5].lower() == "n": g.write("4")
                     elif instruction[5].lower() == "p": g.write("5")
                     elif instruction[5].lower() == "c": g.write("7")
                     g.write('\n' + instruction[7:])
                 elif instruction[4] == 'r':
                     if instruction[5].lower() == "s": g.write("8")
                     elif instruction[5].lower() == "z": g.write("9")
+                    elif instruction[5].lower() == "n": g.write("e")
                     elif instruction[5].lower() == "p": g.write("d")
                     elif instruction[5].lower() == "c": g.write("f")
+                    g.write('\n')
+            elif instruction[0] == 'c':
+                g.write('f')
+                if instruction[1] == 'd':
+                    if instruction[2].lower() == "s": g.write("0")
+                    elif instruction[2].lower() == "z": g.write("1")
+                    elif instruction[2].lower() == "n": g.write("4")
+                    elif instruction[2].lower() == "p": g.write("5")
+                    elif instruction[2].lower() == "c": g.write("7")
+                    g.write('\n' + instruction[4:])
+                elif instruction[1] == 'r':
+                    if instruction[2].lower() == "s": g.write("8")
+                    elif instruction[2].lower() == "z": g.write("9")
+                    elif instruction[2].lower() == "n": g.write("e")
+                    elif instruction[2].lower() == "p": g.write("d")
+                    elif instruction[2].lower() == "c": g.write("f")
                     g.write('\n')

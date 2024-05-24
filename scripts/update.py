@@ -128,10 +128,10 @@ def update_ALUData(window, ALUData=[0x00]*3, ALUState=0):
 
 def update_FRData(window, FRData=[0]*8):
     for i in range(8):
-        if i in [2, 3, 4, 6]: window.addstr(1, 6+i, " ")
+        if i in [2, 3, 6]: window.addstr(1, 6+i, " ")
         else: window.addstr(1, 6+i, "●", curses.color_pair(FRData[i]+1))
         window.addstr(3, 6+i, str(FRData[i]))
-    window.addstr(2, 6, "SZ   P C")
+    window.addstr(2, 6, "SZ  NP C")
     # window.addstr(3, 6, f"{FRData:08b}")
     window.refresh()
 
