@@ -2,8 +2,6 @@ from helper_functions import *
 from global_variables import *
 
 def static_title(stdscr):
-    stdscr.box()
-    addstr_mid(stdscr, " DSM Processor Simulator ")
     stdscr.refresh()
 
 def static_clock():
@@ -125,7 +123,7 @@ def static_RG():
 
 def static_extMemDisplay():
     height = 32+2; width = 11*8
-    begin_y = 2; begin_x = curses.COLS - width - 4
+    begin_y = 2; begin_x = main_mid + 35
     ext_mem_display = curses.newwin(height, width, begin_y, begin_x)
     ext_mem_display.box()
     addstr_mid(ext_mem_display, " External Memory Display ")

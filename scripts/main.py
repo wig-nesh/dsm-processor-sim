@@ -710,7 +710,7 @@ def main(stdscr):
 
     # ----------STATIC ELEMENTS----------
 
-    static_title(stdscr)
+    stdscr.refresh()
     clk = static_clock()
     ext_mem = static_extMem()
     op_r = static_OR()
