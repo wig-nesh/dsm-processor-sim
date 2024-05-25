@@ -5,7 +5,7 @@
 ## How to Use
 - Make sure you have the `curses` module for python installed, and use a full screen terminal window.
 - Type your assembly program using the commands given below into `program/code.txt` 
-- Compile it using `python program/compiler.py`
+- Compile it using `python program/assembler.py`
 - A test program is provided in `code.txt` already, which calculates the n-th Fibonacci number.
 - Run it using `python scripts/main.py`
 - If you get any errors, try reducing your display scaling and retry. It would most probably be an issue related to your terminal not having enough space.

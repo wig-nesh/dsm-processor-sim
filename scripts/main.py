@@ -60,7 +60,7 @@ def main(stdscr):
     curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK) 
 
     # upload program to memory
-    with open(osp.join("program","compiled_code.txt"),'r') as f:
+    with open(osp.join("program","machine_code.txt"),'r') as f:
         i = 0
         for line in f.readlines():
             extMemData[i] = int(line,16)
