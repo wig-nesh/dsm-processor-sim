@@ -9,6 +9,7 @@
 - A test program is provided in `code.txt` already, which calculates the n-th Fibonacci number.
 - Run it using `python scripts/main.py`
 - If you get any errors, try reducing your display scaling and retry. It would most probably be an issue related to your terminal not having enough space.
+- To change the frequency of the clock, update `freq` in `main.py`.
 
 ## Commands
  **Command** | **Action** 

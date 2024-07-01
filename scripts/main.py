@@ -70,7 +70,7 @@ def main(stdscr):
     clock_cycle = [0]
     address = [0]
     value = [0]
-    freq = 100
+    freq = 50
 
     def clock_tick():
         global extMemData
